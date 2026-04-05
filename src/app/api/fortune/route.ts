@@ -1,12 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Redis } from '@upstash/redis'
 import { FortuneInputSchema } from '@/lib/claude/input-schema'
 import { calculateAllSystems } from '@/lib/orrery/calculate'
 import { streamFortuneReading } from '@/lib/claude/client'
 
 export const maxDuration = 300
 
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+})
+
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+  )
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req)
+
+    // Check if this IP already used their one-time fortune
+    const used = await redis.get(`fortune:${ip}`)
+    if (used) {
+      return NextResponse.json(
+        { error: '이미 운세를 확인하셨습니다. 1인 1회만 가능합니다.' },
+        { status: 429 }
+      )
+    }
+
     const body = await req.json()
 
     // Validate input
@@ -23,17 +48,18 @@ export async function POST(req: NextRequest) {
     // Calculate all 3 systems
     const fortuneData = await calculateAllSystems(input)
 
+    // Mark IP as used BEFORE streaming (prevent double-submit)
+    await redis.set(`fortune:${ip}`, '1', { ex: 60 * 60 * 24 * 365 }) // 1 year expiry
+
     // Stream Claude response
     const abortController = new AbortController()
 
-    // Abort if client disconnects
     req.signal.addEventListener('abort', () => {
       abortController.abort()
     })
 
     const stream = await streamFortuneReading(fortuneData, abortController.signal)
 
-    // Create a ReadableStream that forwards Claude's text chunks
     const encoder = new TextEncoder()
     const readable = new ReadableStream({
       async start(controller) {
