@@ -38,7 +38,7 @@ const currentYear = new Date().getFullYear()
 const years = Array.from({ length: currentYear - 1900 + 1 }, (_, i) => currentYear - i)
 const months = Array.from({ length: 12 }, (_, i) => i + 1)
 const hours = Array.from({ length: 24 }, (_, i) => i)
-const minutes = [0, 10, 20, 30, 40, 50]
+const minutes = Array.from({ length: 12 }, (_, i) => i * 5) // 0,5,10,...55
 
 function getDaysInMonth(year: number, month: number) {
   return new Date(year, month, 0).getDate()
@@ -130,93 +130,124 @@ export default function BirthInfoForm({
         </div>
       </div>
 
-      {/* Birth date */}
+      {/* Birth date — number inputs */}
       <div>
         <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-ink-dark)' }}>
           생년월일
         </label>
         <div className="flex gap-2">
-          <select
-            className="flex-1 rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors"
-            style={{
-              backgroundColor: 'var(--color-hanji-cream)',
-              borderColor: 'var(--color-gold-light)',
-              color: 'var(--color-ink-dark)',
-            }}
-            value={birthData.year}
-            onChange={(e) => updateBirth({ year: Number(e.target.value), day: 1 })}
-          >
-            {years.map((y) => (
-              <option key={y} value={y}>{y}년</option>
-            ))}
-          </select>
-          <select
-            className="w-24 rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors"
-            style={{
-              backgroundColor: 'var(--color-hanji-cream)',
-              borderColor: 'var(--color-gold-light)',
-              color: 'var(--color-ink-dark)',
-            }}
-            value={birthData.month}
-            onChange={(e) => updateBirth({ month: Number(e.target.value), day: 1 })}
-          >
-            {months.map((m) => (
-              <option key={m} value={m}>{m}월</option>
-            ))}
-          </select>
-          <select
-            className="w-20 rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors"
-            style={{
-              backgroundColor: 'var(--color-hanji-cream)',
-              borderColor: 'var(--color-gold-light)',
-              color: 'var(--color-ink-dark)',
-            }}
-            value={birthData.day}
-            onChange={(e) => updateBirth({ day: Number(e.target.value) })}
-          >
-            {days.map((d) => (
-              <option key={d} value={d}>{d}일</option>
-            ))}
-          </select>
+          <div className="flex-1 relative">
+            <input
+              type="number"
+              min={1900}
+              max={currentYear}
+              placeholder="1990"
+              className="w-full rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors pr-7"
+              style={{
+                backgroundColor: 'var(--color-hanji-cream)',
+                borderColor: 'var(--color-gold-light)',
+                color: 'var(--color-ink-dark)',
+              }}
+              value={birthData.year}
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                if (v >= 1900 && v <= currentYear) updateBirth({ year: v, day: 1 })
+              }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>년</span>
+          </div>
+          <div className="w-20 relative">
+            <input
+              type="number"
+              min={1}
+              max={12}
+              placeholder="1"
+              className="w-full rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors pr-7"
+              style={{
+                backgroundColor: 'var(--color-hanji-cream)',
+                borderColor: 'var(--color-gold-light)',
+                color: 'var(--color-ink-dark)',
+              }}
+              value={birthData.month}
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                if (v >= 1 && v <= 12) updateBirth({ month: v, day: 1 })
+              }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>월</span>
+          </div>
+          <div className="w-20 relative">
+            <input
+              type="number"
+              min={1}
+              max={daysInMonth}
+              placeholder="1"
+              className="w-full rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors pr-7"
+              style={{
+                backgroundColor: 'var(--color-hanji-cream)',
+                borderColor: 'var(--color-gold-light)',
+                color: 'var(--color-ink-dark)',
+              }}
+              value={birthData.day}
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                if (v >= 1 && v <= daysInMonth) updateBirth({ day: v })
+              }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>일</span>
+          </div>
         </div>
       </div>
 
-      {/* Birth time */}
+      {/* Birth time — number inputs */}
       <div>
         <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-ink-dark)' }}>
           태어난 시간
         </label>
         <div className="flex gap-2 mb-2">
-          <select
-            className="flex-1 rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors disabled:opacity-40"
-            style={{
-              backgroundColor: 'var(--color-hanji-cream)',
-              borderColor: 'var(--color-gold-light)',
-              color: 'var(--color-ink-dark)',
-            }}
-            disabled={birthData.timeUnknown}
-            value={birthData.hour}
-            onChange={(e) => updateBirth({ hour: Number(e.target.value) })}
-          >
-            {hours.map((h) => (
-              <option key={h} value={h}>{String(h).padStart(2, '0')}시</option>
-            ))}
-          </select>
-          <select
-            className="w-28 rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors disabled:opacity-40"
-            style={{
-              backgroundColor: 'var(--color-hanji-cream)',
-              borderColor: 'var(--color-gold-light)',
-              color: 'var(--color-ink-dark)',
-            }}
-            disabled={birthData.timeUnknown}
-            value={birthData.minute}
-            onChange={(e) => updateBirth({ minute: Number(e.target.value) })}
-          >
-            {minutes.map((m) => (
-              <option key={m} value={m}>{String(m).padStart(2, '0')}분</option>
-            ))}
-          </select>
+          <div className="flex-1 relative">
+            <input
+              type="number"
+              min={0}
+              max={23}
+              placeholder="12"
+              className="w-full rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors disabled:opacity-40 pr-7"
+              style={{
+                backgroundColor: 'var(--color-hanji-cream)',
+                borderColor: 'var(--color-gold-light)',
+                color: 'var(--color-ink-dark)',
+              }}
+              disabled={birthData.timeUnknown}
+              value={birthData.hour}
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                if (v >= 0 && v <= 23) updateBirth({ hour: v })
+              }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>시</span>
+          </div>
+          <div className="w-28 relative">
+            <input
+              type="number"
+              min={0}
+              max={55}
+              step={5}
+              placeholder="0"
+              className="w-full rounded-lg px-2 py-2.5 text-sm border focus:outline-none transition-colors disabled:opacity-40 pr-7"
+              style={{
+                backgroundColor: 'var(--color-hanji-cream)',
+                borderColor: 'var(--color-gold-light)',
+                color: 'var(--color-ink-dark)',
+              }}
+              disabled={birthData.timeUnknown}
+              value={birthData.minute}
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                if (v >= 0 && v <= 55) updateBirth({ minute: Math.round(v / 5) * 5 })
+              }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>분</span>
+          </div>
         </div>
         <label className="flex items-center gap-2 cursor-pointer select-none">
           <input

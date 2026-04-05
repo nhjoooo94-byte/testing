@@ -57,31 +57,41 @@ function DateEventList({
 
       {items.map((item, i) => (
         <div key={i} className="flex gap-2 mb-2 items-center">
-          <select
-            className="flex-1 rounded-lg px-3 py-2.5 text-sm border focus:outline-none transition-colors"
-            style={selectStyle}
-            value={item.year || ''}
-            onChange={(e) => updateItem(i, { year: Number(e.target.value) })}
-          >
-            <option value="">년도 선택</option>
-            {years.map((y) => (
-              <option key={y} value={y}>{y}년</option>
-            ))}
-          </select>
-          <select
-            className="w-24 rounded-lg px-3 py-2.5 text-sm border focus:outline-none transition-colors"
-            style={selectStyle}
-            disabled={!item.year}
-            value={item.month ?? ''}
-            onChange={(e) =>
-              updateItem(i, { month: e.target.value ? Number(e.target.value) : undefined })
-            }
-          >
-            <option value="">월</option>
-            {months.map((m) => (
-              <option key={m} value={m}>{m}월</option>
-            ))}
-          </select>
+          <div className="flex-1 relative">
+            <input
+              type="number"
+              min={1950}
+              max={currentYear}
+              placeholder="2020"
+              className="w-full rounded-lg px-3 py-2.5 text-sm border focus:outline-none transition-colors pr-7"
+              style={selectStyle}
+              value={item.year || ''}
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                if (v >= 1950 && v <= currentYear) updateItem(i, { year: v })
+                else if (!e.target.value) updateItem(i, { year: 0 })
+              }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>년</span>
+          </div>
+          <div className="w-20 relative">
+            <input
+              type="number"
+              min={1}
+              max={12}
+              placeholder=""
+              className="w-full rounded-lg px-3 py-2.5 text-sm border focus:outline-none transition-colors pr-7"
+              style={selectStyle}
+              disabled={!item.year}
+              value={item.month ?? ''}
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                if (v >= 1 && v <= 12) updateItem(i, { month: v })
+                else if (!e.target.value) updateItem(i, { month: undefined })
+              }}
+            />
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>월</span>
+          </div>
           <button
             type="button"
             onClick={() => onChange(items.filter((_, idx) => idx !== i))}
