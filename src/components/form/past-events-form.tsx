@@ -67,9 +67,9 @@ function DateEventList({
               style={selectStyle}
               value={item.year || ''}
               onChange={(e) => {
+                if (!e.target.value) { updateItem(i, { year: 0 }); return }
                 const v = Number(e.target.value)
-                if (v >= 1950 && v <= currentYear) updateItem(i, { year: v })
-                else if (!e.target.value) updateItem(i, { year: 0 })
+                if (v >= 0 && v <= currentYear) updateItem(i, { year: v })
               }}
             />
             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>년</span>
@@ -85,9 +85,9 @@ function DateEventList({
               disabled={!item.year}
               value={item.month ?? ''}
               onChange={(e) => {
+                if (!e.target.value) { updateItem(i, { month: undefined }); return }
                 const v = Number(e.target.value)
-                if (v >= 1 && v <= 12) updateItem(i, { month: v })
-                else if (!e.target.value) updateItem(i, { month: undefined })
+                if (v >= 0 && v <= 12) updateItem(i, { month: v })
               }}
             />
             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>월</span>
