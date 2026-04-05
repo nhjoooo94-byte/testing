@@ -20,7 +20,7 @@ export async function streamFortuneReading(
 
   const stream = anthropic.messages.stream(
     {
-      model: 'claude-opus-4-20250514',
+      model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-20250514',
       max_tokens: 32000,
       system: systemPrompt,
       messages: [{ role: 'user', content: userMessage }],
