@@ -10,7 +10,7 @@ export default function Footer() {
       </p>
       <p className="text-[10px] mt-1 opacity-20">
         <a
-          href="https://github.com/nhjoo/sun-fortune"
+          href="https://github.com/nhjoooo94-byte/testing"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:opacity-60 transition-opacity"

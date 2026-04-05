@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/nhjoo/Desktop/ai/Sun/sun-fortune\\\" && gh repo rename testing 2>&1\",\"description\":\"Rename GitHub repo to testing\"}",
+  "error": "Exit code 1\n--yes required when passing a single argument\n\nUsage:  gh repo rename [<new-name>] [flags]\n\nFlags:\n  -R, --repo [HOST/]OWNER/REPO   Select another repository using the [HOST/]OWNER/REPO format\n  -y, --yes                      Skip the confirmation prompt",
+  "timestamp": "2026-04-05T05:00:03.157Z",
+  "retry_count": 1
+}
