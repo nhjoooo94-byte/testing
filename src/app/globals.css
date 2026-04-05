@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --color-red-primary: #C41E3A;
+  --color-red-dark: #8B1425;
+  --color-gold-accent: #D4A847;
+  --color-gold-light: #E8D5A3;
+  --color-ink-dark: #2C1810;
+  --color-ink-medium: #5C3D2E;
+  --color-hanji-cream: #F5ECD7;
+  --color-hanji-bg: #FAF6EB;
+  --color-parchment: #F0E6D0;
+
+  --font-heading: "Noto Serif KR", serif;
+  --font-body: "Noto Sans KR", sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-hanji-bg);
+  color: var(--color-ink-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+.fortune-card {
+  background: rgba(245, 236, 215, 0.85);
+  border: 1px solid var(--color-gold-light);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44, 24, 16, 0.08);
+}
+
+.gold-border {
+  border-left: 3px solid var(--color-gold-accent);
+}
+
+.prob-bar {
+  background: linear-gradient(90deg, var(--color-red-primary), var(--color-gold-accent));
+  border-radius: 9999px;
+  height: 8px;
+}
+
+@keyframes inkWash {
+  0% { opacity: 0.3; transform: scale(0.98); }
+  50% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0.3; transform: scale(0.98); }
+}
+.ink-loading {
+  animation: inkWash 2s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
