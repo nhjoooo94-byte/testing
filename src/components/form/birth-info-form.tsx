@@ -148,10 +148,11 @@ export default function BirthInfoForm({
                 borderColor: 'var(--color-gold-light)',
                 color: 'var(--color-ink-dark)',
               }}
-              value={birthData.year}
+              value={birthData.year || ''}
               onChange={(e) => {
+                if (!e.target.value) { updateBirth({ year: 0 }); return }
                 const v = Number(e.target.value)
-                if (v >= 1900 && v <= currentYear) updateBirth({ year: v, day: 1 })
+                if (v >= 0 && v <= currentYear) updateBirth({ year: v })
               }}
             />
             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>년</span>
@@ -168,10 +169,11 @@ export default function BirthInfoForm({
                 borderColor: 'var(--color-gold-light)',
                 color: 'var(--color-ink-dark)',
               }}
-              value={birthData.month}
+              value={birthData.month || ''}
               onChange={(e) => {
+                if (!e.target.value) { updateBirth({ month: 0 }); return }
                 const v = Number(e.target.value)
-                if (v >= 1 && v <= 12) updateBirth({ month: v, day: 1 })
+                if (v >= 0 && v <= 12) updateBirth({ month: v })
               }}
             />
             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>월</span>
@@ -188,10 +190,11 @@ export default function BirthInfoForm({
                 borderColor: 'var(--color-gold-light)',
                 color: 'var(--color-ink-dark)',
               }}
-              value={birthData.day}
+              value={birthData.day || ''}
               onChange={(e) => {
+                if (!e.target.value) { updateBirth({ day: 0 }); return }
                 const v = Number(e.target.value)
-                if (v >= 1 && v <= daysInMonth) updateBirth({ day: v })
+                if (v >= 0 && v <= daysInMonth) updateBirth({ day: v })
               }}
             />
             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>일</span>
@@ -218,8 +221,9 @@ export default function BirthInfoForm({
                 color: 'var(--color-ink-dark)',
               }}
               disabled={birthData.timeUnknown}
-              value={birthData.hour}
+              value={birthData.hour !== undefined ? birthData.hour : ''}
               onChange={(e) => {
+                if (!e.target.value) { updateBirth({ hour: 0 }); return }
                 const v = Number(e.target.value)
                 if (v >= 0 && v <= 23) updateBirth({ hour: v })
               }}
@@ -240,10 +244,11 @@ export default function BirthInfoForm({
                 color: 'var(--color-ink-dark)',
               }}
               disabled={birthData.timeUnknown}
-              value={birthData.minute}
+              value={birthData.minute !== undefined ? birthData.minute : ''}
               onChange={(e) => {
+                if (!e.target.value) { updateBirth({ minute: 0 }); return }
                 const v = Number(e.target.value)
-                if (v >= 0 && v <= 55) updateBirth({ minute: Math.round(v / 5) * 5 })
+                if (v >= 0 && v <= 59) updateBirth({ minute: Math.round(v / 5) * 5 })
               }}
             />
             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: 'var(--color-ink-medium)' }}>분</span>

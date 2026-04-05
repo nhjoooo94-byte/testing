@@ -33,10 +33,10 @@ interface PastEventsData {
 const currentYear = new Date().getFullYear()
 
 const defaultBirth: BirthData = {
-  year: 1990,
-  month: 1,
-  day: 1,
-  hour: 12,
+  year: 0,
+  month: 0,
+  day: 0,
+  hour: 0,
   minute: 0,
   gender: 'F',
 }
