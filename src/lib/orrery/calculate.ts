@@ -58,6 +58,10 @@ export async function calculateAllSystems(
     const liunian = calculateLiunian(ziweiChart, currentYear)
     const daxian = getDaxianList(ziweiChart)
 
+    // Calculate liunian for next 2 years (detailed short-term prediction)
+    const liunianNext1 = calculateLiunian(ziweiChart, currentYear + 1)
+    const liunianNext2 = calculateLiunian(ziweiChart, currentYear + 2)
+
     // Calculate liunian for past event years (real cross-validation)
     const pastYears = collectPastEventYears(input)
     const pastLiunians: Record<number, unknown> = {}
@@ -74,6 +78,10 @@ export async function calculateAllSystems(
     return {
       input,
       systems: { saju, ziwei, natal },
+      futureLiunians: {
+        [currentYear + 1]: liunianNext1,
+        [currentYear + 2]: liunianNext2,
+      },
       pastLiunians,
       timeUnknown,
       currentYear,

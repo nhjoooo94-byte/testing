@@ -39,6 +39,15 @@ export function buildUserMessage(data: FortuneData): string {
   parts.push('[서양 점성술 데이터]')
   parts.push(JSON.stringify(systems.natal, null, 0))
 
+  // Future liunian data (next 2 years for detailed monthly predictions)
+  if (data.futureLiunians && Object.keys(data.futureLiunians).length > 0) {
+    parts.push('')
+    parts.push('[근 3년 자미두수 유년운 데이터 — 월 단위 예측용]')
+    for (const [year, liunianData] of Object.entries(data.futureLiunians)) {
+      parts.push(`${year}년 유년운: ${JSON.stringify(liunianData, null, 0)}`)
+    }
+  }
+
   // Weight matrix
   parts.push('')
   parts.push('[가중치 매트릭스]')

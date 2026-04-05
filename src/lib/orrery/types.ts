@@ -90,6 +90,7 @@ export interface AspectInfo {
 export interface FortuneData {
   input: FortuneInput
   systems: SystemResults
+  futureLiunians: Record<number, unknown>
   pastLiunians: Record<number, unknown>
   timeUnknown: boolean
   currentYear: number
