@@ -6,10 +6,12 @@ import { streamFortuneReading } from '@/lib/claude/client'
 
 export const maxDuration = 300
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-})
+function getRedis() {
+  return new Redis({
+    url: (process.env.UPSTASH_REDIS_REST_URL || '').trim(),
+    token: (process.env.UPSTASH_REDIS_REST_TOKEN || '').trim(),
+  })
+}
 
 function getClientIp(req: NextRequest): string {
   return (
@@ -22,6 +24,8 @@ function getClientIp(req: NextRequest): string {
 export async function POST(req: NextRequest) {
   try {
     const ip = getClientIp(req)
+
+    const redis = getRedis()
 
     // Check if this IP already used their one-time fortune
     const used = await redis.get(`fortune:${ip}`)
@@ -49,7 +53,7 @@ export async function POST(req: NextRequest) {
     const fortuneData = await calculateAllSystems(input)
 
     // Mark IP as used BEFORE streaming (prevent double-submit)
-    await redis.set(`fortune:${ip}`, '1', { ex: 60 * 60 * 24 * 365 }) // 1 year expiry
+    await redis.set(`fortune:${ip}`, '1', { ex: 60 * 60 * 24 * 365 })
 
     // Stream Claude response
     const abortController = new AbortController()

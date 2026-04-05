@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/nhjoo/Desktop/ai/Sun/sun-fortune\\\" && npx vercel env add UPSTASH_REDIS_REST_URL production --project sun-fortunes <<< \\\"https://calm-goshawk-79922.upstash.io\\\" 2>&1 && npx ve...",
-  "error": "Exit code 1\n<claude-code-hint v=\"1\" type=\"plugin\" value=\"vercel@claude-plugins-official\" />\n{\n  \"status\": \"error\",\n  \"reason\": \"invalid_arguments\",\n  \"message\": \"unknown or unexpected option: --project\"\n}",
-  "timestamp": "2026-04-05T14:12:42.741Z",
+  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/nhjoo/Desktop/ai/Sun/sun-fortune\\\" && npx vercel --prod 2>&1\",\"timeout\":180000,\"description\":\"Deploy Opus with full output\"}",
+  "error": "Exit code 1\n<claude-code-hint v=\"1\" type=\"plugin\" value=\"vercel@claude-plugins-official\" />\nRetrieving project…\nDeploying nhjoooo94-8401s-projects/sun-fortune\nUploading [--------------------] (0.0B/1.1KB)\nUploading [====================] (1.1KB/1.1KB)\nInspect: https://vercel.com/nhjoooo94-8401s-projects/sun-fortune/DhKJEWq42qu8QqEB1HuDSyvUXn5i [2s]\nProduction: https://sun-fortune-dqlh8odhx-nhjoooo94-8401s-projects.vercel.app [2s]\nBuilding...\nBuilding...\nBuilding: Running build in Washington, D.C...",
+  "timestamp": "2026-04-05T15:32:29.253Z",
   "retry_count": 1
 }
