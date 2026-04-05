@@ -3,7 +3,7 @@ import { FortuneInputSchema } from '@/lib/claude/input-schema'
 import { calculateAllSystems } from '@/lib/orrery/calculate'
 import { streamFortuneReading } from '@/lib/claude/client'
 
-export const maxDuration = 60
+export const maxDuration = 300
 
 export async function POST(req: NextRequest) {
   try {
